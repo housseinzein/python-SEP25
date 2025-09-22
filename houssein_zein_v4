@@ -1,0 +1,157 @@
+BLACK   = "\033[30m"
+RED     = "\033[91m"
+GREEN   = "\033[92m"
+YELLOW  = "\033[93m"
+BLUE    = "\033[94m"
+MAGENTA = "\033[95m"
+CYAN    = "\033[96m"
+WHITE   = "\033[97m"
+RESET   = "\033[0m"
+'''
+😀 → \U0001F600
+
+😃 → \U0001F603
+
+🙂 → \U0001F642
+'''
+
+import pandas as pd
+
+# Path to your Excel file
+file_path = r"C:\private_data\Houssein\python\private_simple_codes\PythonString_Codes_Collection\fruit_table.xlsx" 
+
+# Load existing Excel file
+try:
+    df = pd.read_excel(file_path)
+except FileNotFoundError:
+    # If the file does not exist, create a new one with headers
+    df = pd.DataFrame(columns=["First Name", "Last Name", "Age", "Favorite Fruit"])
+
+
+print("Hello at My simple Python Application")
+print("=======================")
+#Part 1: Personal Info Collector 
+'''
+. Create 3 variables to store
+    - A person's name (string) 
+    - Their age (integer) 
+    - Their favorite fruit (string) 
+'''
+
+first_name=""
+
+while not first_name.isalpha():
+    first_name = input("Enter The First Name, it must be only alphabetic: \n")
+    if not first_name.isalpha():
+        print("Invalid username ❌ (letters only allowed)\n")
+
+print(f"Valid username ✅: {first_name}")
+
+print("==========================================")
+last_name=""
+
+# get lastname in alpha not digit
+while not last_name.isalpha():
+    last_name = input("Enter The last Name, it must be only alphabetic:\n")
+    if not last_name.isalpha():
+        print("Invalid lastname ❌ (letters only allowed)\n")
+
+print(f"Valid username ✅: {last_name}")
+
+print("==========================================")
+
+age=0
+while True:
+    age = input("Enter your age, it must be between 0 and 100:\n")
+
+    # check if input is digits only
+    if age.isdigit():
+        age= int(age)
+
+        # check if age < 64
+        if age < 100 and age> 0:
+            print(f"Valid age:✅ {age}")
+            break
+        else:
+            print("❌ Age must be between a and 100\n.")
+    else:
+        print("❌ Invalid input (digits only).\n")
+
+print("==========================================")
+
+# List of valid fruits
+fruits = [
+    "apple", "apricot", "avocado", "banana", "blackberry", "blueberry",
+    "cherry", "coconut", "cranberry", "date", "dragonfruit", "durian",
+    "fig", "gooseberry", "grape", "grapefruit", "guava", "jackfruit",
+    "kiwi", "lemon", "lime", "lychee", "mango", "melon", "nectarine",
+    "orange", "papaya", "passionfruit", "peach", "pear", "persimmon",
+    "pineapple", "plum", "pomegranate", "raspberry", "strawberry",
+    "tangerine", "watermelon"
+]
+# Ask user for input
+# Fruit list
+
+fruits = [
+    "apple", "apricot", "avocado", "banana", "blackberry", "blueberry",
+    "cherry", "coconut", "cranberry", "date", "dragonfruit", "durian",
+    "fig", "gooseberry", "grape", "grapefruit", "guava", "jackfruit",
+    "kiwi", "lemon", "lime", "lychee", "mango", "melon", "nectarine",
+    "orange", "papaya", "passionfruit", "peach", "pear", "persimmon",
+    "pineapple", "plum", "pomegranate", "raspberry", "strawberry",
+    "tangerine", "watermelon"
+]
+
+# Show fruits as a menu
+while True:
+    print("Select a fruit from the list:")
+    for i, fruit in enumerate(fruits, start=1):
+        print(f"{i}. {fruit}")
+
+    # Ask the user to pick a number
+    choice = input("Enter the number of your fruit: ")
+
+    # Validate choice
+    if choice.isdigit():
+        choice = int(choice)
+        if 1 <= choice <= len(fruits):
+            print(f"✅ You selected: {fruits[choice-1]}")
+            break
+        else:
+            print("❌ Invalid number, not in the list.")
+    else:
+        print("❌ Please enter a number.")
+print("==========================================")
+print(f"😀 {RED}Thank you for using our application.{RESET}😀")
+print(
+    f"\t{GREEN}Your name is: {first_name} {last_name}{RESET}\n"
+    f"\t{YELLOW}You are: {age} years old.{RESET}\n"
+    f"\t{CYAN}And you love: {fruit}.{RESET}\n"
+)
+
+# Create a new row as dictionary
+new_row = {
+    "First Name": first_name,
+    "Last Name": last_name,
+    "Age": age,
+    "Favorite Fruit": fruit,
+   
+}
+
+# Append the row
+df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+
+# Save back to Excel
+df.to_excel(file_path, index=False)
+
+print("✅ New employee added successfully!")
+print("==========================================")
+
+from openpyxl import load_workbook
+
+wb = load_workbook(file_path)
+ws = wb.active
+
+from tabulate import tabulate
+table_data = [[cell.value for cell in row] for row in ws.iter_rows()]
+print(tabulate(table_data, tablefmt="grid"))
